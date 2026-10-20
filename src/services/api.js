@@ -1,5 +1,7 @@
 
-const API_URL = import.meta.env.VITE_API_URL || ''
+const API_URL = import.meta.env.DEV
+  ? (import.meta.env.VITE_API_URL || 'http://localhost:5001')
+  : ''
 
 export async function apiRequest(endpoint, options = {}) {
   const response = await fetch(`${API_URL}${endpoint}`, {
@@ -14,9 +16,7 @@ export async function apiRequest(endpoint, options = {}) {
   const data = await response.json().catch(() => ({}))
 
   if (!response.ok) {
-    throw new Error(
-      data.message || `Request failed (${response.status})`
-    )
+    throw new Error(data.message || `Request failed (${response.status})`)
   }
 
   return data
